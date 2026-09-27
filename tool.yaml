@@ -1,0 +1,32 @@
+name: Compliance checker
+description: Checks a trade file against the restricted list and flags rows that fail.
+tags: [compliance, trades, restricted]
+owner: compliance
+version: 1.0.0
+run:
+  dockerfile: ./Dockerfile
+  command: java -cp /app ComplianceChecker
+inputs:
+  - name: trades
+    type: file
+    label: Trade file
+    description: CSV of trades to check
+    bind:
+      as: file
+      path: /inputs/trades
+outputs:
+  - name: report
+    type: table
+    label: Violations
+    description: Rows that failed the check
+    bind:
+      as: file
+      path: /outputs/report.json
+      format: json
+resources:
+  cpu: 1
+  memory: 1GB
+  gpu: none
+  timeout: 60s
+data_access: none
+sharing: company
